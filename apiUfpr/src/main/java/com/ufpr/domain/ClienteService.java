@@ -1,9 +1,14 @@
 package com.ufpr.domain;
+import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
 
 @Service
 public class ClienteService {
@@ -27,14 +32,38 @@ public class ClienteService {
 		return rep.save(cliente);
 	}
 	
-	public List<Cliente> getClientesFake(){
-		List<Cliente> clientes = new ArrayList<>();
+	public Cliente update(Cliente cliente, Long id) {
+		
+		Assert.notNull(id,"Não foi possivel atualizar o registro");
+		//Buscar o carro no banco de dados
+		Optional<Cliente> optional = getClienteById(id);
+		if(optional.isPresent())
+		{
+			Cliente bd = optional.get();
+			// Copiar as propriedades
+			bd.setNome(cliente.getNome());
+			bd.setSobreNome(cliente.getSobreNome());
+			System.out.println("Cliente ID: " + bd.getId());
+			
+			//Atualizar o registro
+			rep.save(bd);
+			
+			return bd;
+		}
+		else {
+			throw new RuntimeException("Não foi possivel atualizar o registro");
+		}
+	}
 	
-		clientes.add(new Cliente(1L,"071.218.839-88","Jorge Miguel", "Hernandes"));
-		clientes.add(new Cliente(1L,"071.589.698-98","Paloma", "Bittar"));
-		clientes.add(new Cliente(1L,"071.587.325-77","Jeanine", "Hernandes"));
-
-		return clientes;
+	public void delete(Long id)
+	{
+		//Buscar o carro no banco de dados
+		Optional<Cliente> cliente = getClienteById(id);
+		if(cliente.isPresent())
+		{
+			rep.deleteById(id);
+		}
+		
 	}
 	
 }
