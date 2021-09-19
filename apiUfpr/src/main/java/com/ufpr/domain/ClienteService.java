@@ -24,7 +24,7 @@ public class ClienteService {
 		return rep.findById(id);
 	}
 	
-	public Iterable<Cliente> getClientesByCpf(String cpf){
+	public List<Cliente> getClientesByCpf(String cpf){
 		return rep.findByCpf(cpf);
 	}
 
