@@ -1,4 +1,4 @@
-package com.carros.api;
+package com.ufpr.api;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +27,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .contact(new Contact("Ricardo Lecheta", "", ""))
-                .title("Carros")
-                .description("Documentação API dos Carros")
-                .license("Apache Licence Version 2.0")
-                .licenseUrl("https://apache.org")
+                .contact(new Contact("Edson, Fábio, Jorge, Marcelo, Valdir", "", ""))
+                .title("Projeto Web-Razer")
+                .description("Documentação Trabalho DAS - Desenvolvimento web -2021")
                 .version("1.0")
                 .build();
 
