@@ -31,5 +31,29 @@ public class ProdutosController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping
+    public String post(@RequestBody Produto produto) {
+
+        Produto prod = service.save(produto);
+
+        return "[{idProduto: " + prod.getId() + "}]";
+    }
+
+    @PutMapping("/{id}")
+    public String put(@PathVariable("id") Long id, @RequestBody Produto produto) {
+
+        Produto prod = service.update(produto, id);
+
+        return "[{idProduto: " + prod.getId() + "}]";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+
+        service.delete(id);
+
+        return "produto deletado";
+    }
 }
 

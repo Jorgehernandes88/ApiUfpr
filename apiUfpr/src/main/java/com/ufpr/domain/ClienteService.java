@@ -35,7 +35,7 @@ public class ClienteService {
 	public Cliente update(Cliente cliente, Long id) {
 		
 		Assert.notNull(id,"Não foi possivel atualizar o registro");
-		//Buscar o carro no banco de dados
+		//Buscar o cliente no banco de dados
 		Optional<Cliente> optional = getClienteById(id);
 		if(optional.isPresent())
 		{
@@ -57,7 +57,7 @@ public class ClienteService {
 	
 	public void delete(Long id)
 	{
-		//Buscar o carro no banco de dados
+		//Buscar o cliente no banco de dados
 		Optional<Cliente> cliente = getClienteById(id);
 		if(cliente.isPresent())
 		{
