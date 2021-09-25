@@ -1,0 +1,75 @@
+package com.ufpr.domain.pedido;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.xml.crypto.Data;
+
+import com.ufpr.domain.itemDoPedido.ItemDoPedido;
+
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
+
+@Entity
+@Table(name = "Pedido")
+public class Pedido {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "idPedido")
+	private Long idPedido;
+	
+	private String data;
+	
+	@Column(name = "Cliente_idCliente")
+	private String idCliente;
+	
+	public Pedido() {
+		
+	}
+
+	public Pedido(Long idPedido, String data, String idCliente) {
+		super();
+		this.idPedido = idPedido;
+		this.data = data;
+		this.idCliente = idCliente;
+	}
+
+
+	public Long getIdPedido() {
+		return idPedido;
+	}
+
+
+	public void setIdPedido(Long idPedido) {
+		this.idPedido = idPedido;
+	}
+
+
+	public String getData() {
+		return data;
+	}
+
+
+	public void setData(String data) {
+		this.data =  data;
+	}
+
+
+	public String getIdCliente() {
+		return idCliente;
+	}
+
+
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
+	}
+
+
+
+}
