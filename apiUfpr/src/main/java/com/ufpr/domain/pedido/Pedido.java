@@ -39,7 +39,7 @@ public class Pedido {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="Pedido_idPedido")
-	private List<ItemDoPedido> itensDoPedido;
+	private List<ItemDoPedido> itensDoPedido = new ArrayList<>();
 	
 	public Pedido() {
 		
