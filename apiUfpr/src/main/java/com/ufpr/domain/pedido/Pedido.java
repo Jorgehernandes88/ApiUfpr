@@ -1,13 +1,21 @@
 package com.ufpr.domain.pedido;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.crypto.Data;
 
 import com.ufpr.domain.itemDoPedido.ItemDoPedido;
@@ -29,17 +37,13 @@ public class Pedido {
 	@Column(name = "Cliente_idCliente")
 	private String idCliente;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="Pedido_idPedido")
+	private List<ItemDoPedido> itensDoPedido;
+	
 	public Pedido() {
 		
 	}
-
-	public Pedido(Long idPedido, String data, String idCliente) {
-		super();
-		this.idPedido = idPedido;
-		this.data = data;
-		this.idCliente = idCliente;
-	}
-
 
 	public Long getIdPedido() {
 		return idPedido;
@@ -70,6 +74,12 @@ public class Pedido {
 		this.idCliente = idCliente;
 	}
 
+	public List<ItemDoPedido> getItensDoPedido() {
+		return itensDoPedido;
+	}
 
+	public void setItensDoPedido(List<ItemDoPedido> itensDoPedido) {
+		this.itensDoPedido = itensDoPedido;
+	}
 
 }

@@ -1,9 +1,11 @@
 package com.ufpr.api;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.catalina.connector.Response;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoService service;
+	@Autowired
 	private ItemDoPedidoService servicePedido;
 	
 	@GetMapping()
@@ -49,12 +52,10 @@ public class PedidoController {
 	}
 	
 	@PostMapping
-	public String post(@RequestBody Pedido pedido, ItemDoPedido itens) {
+	public String post(@RequestBody Pedido pedido) {
 	
 		Pedido pedidos = service.save(pedido);
-		ItemDoPedido itensP = servicePedido.save(itens); 
 		
-				
 		return "[{idCliente: " + pedidos.getIdPedido() + "}]";
 	}
 	

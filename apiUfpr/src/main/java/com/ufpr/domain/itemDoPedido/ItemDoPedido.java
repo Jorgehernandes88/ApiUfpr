@@ -2,46 +2,42 @@ package com.ufpr.domain.itemDoPedido;
 
 import java.security.PublicKey;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.ufpr.domain.pedido.Pedido;
 
 @Entity
 @Table(name = "ItemDoPedido")
 public class ItemDoPedido {
 	
-	
+	//Chave primaria tabela ItemDoPedido
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idItemDoPedido")
 	private Long idItemDoPedido;
 	
+	//Quantidade de itens
 	private int quantidade;
 	
-	@Column(name = "Pedido_idPedido")
-	private String idPedido;
-	
+	//ID do Cliente
 	@Column(name = "Pedido_Cliente_idCliente")
 	private String idCliente;
-	
+
+	//ID do Produto
 	@Column(name = "Produto_idProduto")
 	private String idProduto;
 	
-	
 	public ItemDoPedido() {
 		
-	}
-
-	public ItemDoPedido(Long idItemDoPedido, int quantidade, String idPedido, String idCliente, String idProduto) {
-		super();
-		this.idItemDoPedido = idItemDoPedido;
-		this.quantidade = quantidade;
-		this.idPedido = idPedido;
-		this.idCliente = idCliente;
-		this.idProduto = idProduto;
 	}
 
 	public Long getIdItemDoPedido() {
@@ -60,14 +56,6 @@ public class ItemDoPedido {
 		this.quantidade = quantidade;
 	}
 
-	public String getIdPedido() {
-		return idPedido;
-	}
-
-	public void setIdPedido(String idPedido) {
-		this.idPedido = idPedido;
-	}
-
 	public String getIdCliente() {
 		return idCliente;
 	}
@@ -83,5 +71,5 @@ public class ItemDoPedido {
 	public void setIdProduto(String idProduto) {
 		this.idProduto = idProduto;
 	}
-	
+
 }
