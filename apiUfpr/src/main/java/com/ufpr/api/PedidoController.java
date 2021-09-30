@@ -8,6 +8,8 @@ import org.apache.catalina.connector.Response;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import java.util.Optional;
 
+import java.util.Optional;
+
 import com.ufpr.domain.Cliente;
 import com.ufpr.domain.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
