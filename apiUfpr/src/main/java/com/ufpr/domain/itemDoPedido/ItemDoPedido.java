@@ -1,11 +1,7 @@
 package com.ufpr.domain.itemDoPedido;
 
-import java.security.PublicKey;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.ufpr.domain.pedido.Pedido;
+import com.ufpr.domain.produto.Produto;
 
 @Entity
 @Table(name = "ItemDoPedido")
@@ -32,9 +28,10 @@ public class ItemDoPedido {
 	@Column(name = "Pedido_Cliente_idCliente")
 	private String idCliente;
 
-	//ID do Produto
-	@Column(name = "Produto_idProduto")
-	private String idProduto;
+	//Produto
+	@ManyToOne
+	@JoinColumn(name="Produto_idProduto", nullable=false)
+	private Produto produto;
 	
 	public ItemDoPedido() {
 		
@@ -64,12 +61,12 @@ public class ItemDoPedido {
 		this.idCliente = idCliente;
 	}
 
-	public String getIdProduto() {
-		return idProduto;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setIdProduto(String idProduto) {
-		this.idProduto = idProduto;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
 }
