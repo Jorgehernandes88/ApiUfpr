@@ -1,7 +1,9 @@
 package com.ufpr.api;
 
 import java.util.Optional;
+
 import com.ufpr.domain.ClienteService;
+import com.ufpr.domain.pedido.PedidoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +24,24 @@ public class PedidoController {
 	
 	@Autowired
 	private PedidoService service;
+
+	@Autowired
+	private ClienteService serviceCli;
+
 	@Autowired
 	private ClienteService clienteService;
 	private ItemDoPedidoService servicePedido;
 	
 	@GetMapping()
-	public ResponseEntity<Iterable<Pedido>> get() {
+	public ResponseEntity<Iterable<PedidoDTO>> get() {
 		return new ResponseEntity<>(service.getPedido(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Pedido> get(@PathVariable("id") Long id) {
+	public ResponseEntity<PedidoDTO> get(@PathVariable("id") Long id) {
 		
-		Optional<Pedido> pedido = service.getPedidoById(id);
+		Optional<PedidoDTO> pedido = service.getPedidoById(id);
+
 		
 		if(pedido.isPresent())
 		{
@@ -49,7 +56,7 @@ public class PedidoController {
 	
 		Pedido pedidos = service.save(pedido);
 		
-		return "[{idCliente: " + pedidos.getIdPedido() + "}]";
+		return "[{idPedido: " + pedidos.getIdPedido() + "}]";
 	}
 	
 }

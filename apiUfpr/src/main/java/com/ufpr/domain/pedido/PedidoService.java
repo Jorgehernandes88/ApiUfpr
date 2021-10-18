@@ -1,27 +1,39 @@
 package com.ufpr.domain.pedido;
-import org.apache.logging.log4j.message.Message;
+import com.ufpr.domain.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
-
 @Service
 public class PedidoService {
-	
+
 	@Autowired
 	private PedidoRepository rep;
+
+	@Autowired
+	private ClienteRepository repCli;
 		
-	public Iterable<Pedido> getPedido(){
-		return rep.findAll();
+	public List<PedidoDTO> getPedido(){
+
+		List<Pedido> pedidos = rep.findAll();
+
+		List<PedidoDTO> pedidosDTO = new ArrayList<>();
+
+		for (Pedido p : pedidos){
+			PedidoDTO newPedido = new PedidoDTO(p);
+			newPedido.setCliente(repCli.findById( Long.parseLong(p.getIdCliente())).get());
+			pedidosDTO.add(newPedido);
+		}
+
+		return pedidosDTO;
 	}
 	
-	public Optional<Pedido> getPedidoById(Long id){
-		return rep.findById(id);
+	public Optional<PedidoDTO> getPedidoById(Long id){
+
+		Optional<PedidoDTO> pedido = Optional.of(new PedidoDTO(rep.findById(id)));
+		return pedido;
 	}
 	
 
