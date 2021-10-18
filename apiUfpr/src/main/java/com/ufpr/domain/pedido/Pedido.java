@@ -15,26 +15,23 @@ import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 @Entity
 @Table(name = "Pedido")
 public class Pedido {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPedido")
 	private Long idPedido;
-	
+
 	private String data;
 
-	@ManyToOne
-	@JoinColumn(name="Cliente_idCliente", nullable=false)
-	private Cliente cliente;
-
+	@Column(name = "Cliente_idCliente")
+	private String idCliente;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="Pedido_idPedido")
 	private List<ItemDoPedido> itensDoPedido = new ArrayList<>();
-	
+
 	public Pedido() {
-		
+
 	}
 
 	public Long getIdPedido() {
@@ -57,13 +54,12 @@ public class Pedido {
 	}
 
 
-	public Cliente getCliente() {
-		return cliente;
+	public String getIdCliente() {
+		return idCliente;
 	}
 
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
 	}
 
 	public List<ItemDoPedido> getItensDoPedido() {
