@@ -15,7 +15,7 @@ import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 @Entity
 @Table(name = "Pedido")
 public class Pedido {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idPedido")
