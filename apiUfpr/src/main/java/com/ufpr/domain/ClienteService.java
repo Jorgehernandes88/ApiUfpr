@@ -24,7 +24,17 @@ public class ClienteService {
 	}
 
 	public Cliente save(Cliente cliente) {
-		return rep.save(cliente);
+
+		//Buscar o cliente no banco de dados
+		List<Cliente> clientes = getClientesByCpf(cliente.getCpf());
+		if(clientes.isEmpty())
+		{
+			return rep.save(cliente);
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	public Cliente update(Cliente cliente, Long id) {
