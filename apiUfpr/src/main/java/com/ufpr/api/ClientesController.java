@@ -73,14 +73,12 @@ public class ClientesController {
 			if(PostCliente == null)
 			{
 				map.put("Erro","CPF já existente");
-				return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
-						
+				return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);		
 			}	
 			else {
 				map.put("idCliente",PostCliente.getId().toString());
 				map.put("Status","Cliente incluido com sucesso");
-				return new ResponseEntity<>(map,HttpStatus.OK);
-						
+				return new ResponseEntity<>(map,HttpStatus.OK);					
 			}
 		}
 	}
