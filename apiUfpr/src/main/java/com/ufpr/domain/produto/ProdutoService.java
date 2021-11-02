@@ -12,6 +12,10 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository rep;
 
+    public void setRepository(ProdutoRepository repository){
+        this.rep = repository;
+    }
+
     public Iterable<Produto> getProdutos(){
         return rep.findAll();
     }
@@ -47,13 +51,18 @@ public class ProdutoService {
         }
     }
 
-    public void delete(Long id)
+    public void delete(Long id) throws Exception
     {
-        //Buscar o produto no banco de dados
-        Optional<Produto> produto = getProdutoById(id);
-        if(produto.isPresent())
-        {
-            rep.deleteById(id);
+        try {
+            //Buscar o produto no banco de dados
+            Optional<Produto> produto = getProdutoById(id);
+            if (produto.isPresent()) {
+                rep.deleteById(id);
+            }
         }
+    catch(Exception ex)
+    {
+        throw  ex;
+    }
     }
 }
