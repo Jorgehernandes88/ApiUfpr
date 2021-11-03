@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ public class ClientesController {
 	@Autowired
 	private ClienteService service;
 	
+	 @CrossOrigin
 	@GetMapping()
 	public ResponseEntity<Iterable<Cliente>> get() {
 		return new ResponseEntity<>(service.getClientes(),HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> get( @PathVariable("id") Long id) {
 		
@@ -43,7 +46,8 @@ public class ClientesController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
+	
+	@CrossOrigin
 	@GetMapping("/cpf/{cpf}")
 	public  ResponseEntity<List<Cliente>> get( @PathVariable("cpf") String cpf) {
 		
@@ -57,6 +61,7 @@ public class ClientesController {
 		}
 	}
 	
+	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<HashMap<String, String>> post(@RequestBody Cliente cliente) {
 		HashMap<String, String> map = new HashMap<>();
@@ -84,6 +89,7 @@ public class ClientesController {
 		}
 	}
 	
+	@CrossOrigin
 	@PutMapping("/{id}")
 	public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
 			
@@ -102,6 +108,7 @@ public class ClientesController {
         }
 	}
 	
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") Long id) {
 	

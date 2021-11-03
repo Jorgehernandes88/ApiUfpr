@@ -7,6 +7,7 @@ import com.ufpr.domain.pedido.PedidoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,11 +33,13 @@ public class PedidoController {
 	private ClienteService clienteService;
 	private ItemDoPedidoService servicePedido;
 	
+	@CrossOrigin
 	@GetMapping()
 	public ResponseEntity<Iterable<PedidoDTO>> get() {
 		return new ResponseEntity<>(service.getPedido(),HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDTO> get(@PathVariable("id") Long id) {
 		
@@ -51,6 +54,7 @@ public class PedidoController {
 		}
 	}
 	
+	@CrossOrigin
 	@PostMapping
 	public String post(@RequestBody Pedido pedido) {
 	
