@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ufpr.domain.ClienteService;
+import com.ufpr.domain.produto.Produto;
 import com.ufpr.domain.validadores.ValidaCPF;
 import com.ufpr.domain.Cliente;
 
@@ -60,7 +61,7 @@ public class ClientesController {
 	public ResponseEntity<HashMap<String, String>> post(@RequestBody Cliente cliente) {
 		HashMap<String, String> map = new HashMap<>();
 
-		if(cliente.getNome() == "" | cliente.getSobreNome() == "" | cliente.getCpf() == "")
+		if(ClienteValido(cliente))
 		{
 			map.put("Erro","Campos obrigatórios não preenchidos");
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
@@ -84,11 +85,21 @@ public class ClientesController {
 	}
 	
 	@PutMapping("/{id}")
-	public String put(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
-	
-		Cliente cli = service.update(cliente, id);
-				
-		return "[{idCliente: " + cli.getId() + "}]";
+	public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
+			
+        HashMap<String, String> map = new HashMap<>();
+        
+        if (ClienteValido(cliente))
+        {
+			map.put("Erro","Campos obrigatórios não preenchidos");
+			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+        }else {
+        	Cliente cli = service.update(cliente, id);
+        	
+			map.put("idCliente",cli.getId().toString());
+			map.put("Status","Cliente atualizado com sucesso");
+			return new ResponseEntity<>(map,HttpStatus.OK);	
+        }
 	}
 	
 	@DeleteMapping("/{id}")
@@ -99,5 +110,8 @@ public class ClientesController {
 		return "cliente deletado";
 	}
 	
-	
+    private boolean ClienteValido(Cliente cliente) {
+        return cliente.getNome() == "" | cliente.getSobreNome() == "" | cliente.getCpf() == "" 
+        		| cliente.getNome() == null | cliente.getSobreNome() == null | cliente.getCpf() == null;
+    }
 }

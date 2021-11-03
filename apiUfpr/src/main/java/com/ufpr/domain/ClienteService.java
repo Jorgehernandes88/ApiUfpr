@@ -11,6 +11,11 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository rep;
 		
+	public void setRepository(ClienteRepository repository) {
+		this.rep = repository;
+		
+	}
+	
 	public Iterable<Cliente> getClientes(){
 		return rep.findAll();
 	}
@@ -69,6 +74,5 @@ public class ClienteService {
 			rep.deleteById(id);
 		}
 		
-	}
-	
+	}	
 }
