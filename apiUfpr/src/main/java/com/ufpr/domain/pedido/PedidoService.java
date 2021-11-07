@@ -36,6 +36,12 @@ public class PedidoService {
 		return pedido;
 	}
 	
+	public List<Pedido> getPedidoByidCliente(String idCliente){
+
+		List<Pedido> pedido = rep.findByidCliente(idCliente);
+		
+		return pedido;
+	}
 
 	public Pedido save(Pedido pedido) {
 		return rep.save(pedido);

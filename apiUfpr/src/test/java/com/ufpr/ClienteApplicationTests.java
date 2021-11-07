@@ -163,14 +163,26 @@ class ClienteApplicationTests {
         Assert.assertEquals("{Status=Cliente atualizado com sucesso, idCliente=" + cliente.getId().toString() + "}", Objects.requireNonNull(retorno.getBody()).toString());
 		
 	}
-	
-	/*	
+
 	@Test
-	void excluindoCliente() {
+	void ExcluindoCliente() {
 		
-		clienteService.delete(7L);
+	    ResponseEntity<HashMap<String, String>> retorno = controller.delete(16L);
+
+        Assert.assertEquals(HttpStatus.OK, retorno.getStatusCode());
+        Assert.assertEquals("{Status=Cliente excluido com sucesso}", Objects.requireNonNull(retorno.getBody()).toString());
 	}
-	*/
+	
+	@Test
+	void ExcluindoClienteTemProduto() {
+		
+	    ResponseEntity<HashMap<String, String>> retorno = controller.delete(1L);
+
+        Assert.assertEquals(HttpStatus.BAD_REQUEST, retorno.getStatusCode());
+        Assert.assertEquals("{Erro=Esse cliente está associado a Pedidos}", Objects.requireNonNull(retorno.getBody()).toString());
+
+	}
+
 	
 	
 }

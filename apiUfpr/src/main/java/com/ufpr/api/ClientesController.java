@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ufpr.domain.ClienteService;
+import com.ufpr.domain.pedido.Pedido;
+import com.ufpr.domain.pedido.PedidoDTO;
+import com.ufpr.domain.pedido.PedidoService;
 import com.ufpr.domain.produto.Produto;
+import com.ufpr.domain.produto.ProdutoService;
 import com.ufpr.domain.validadores.ValidaCPF;
+import com.ufpr.utils.Strings;
 import com.ufpr.domain.Cliente;
 
 @RestController
@@ -26,6 +31,9 @@ public class ClientesController {
 	
 	@Autowired
 	private ClienteService service;
+	
+	@Autowired
+	private PedidoService pedidoservice;
 	
 	 @CrossOrigin
 	@GetMapping()
@@ -50,7 +58,6 @@ public class ClientesController {
 	@CrossOrigin
 	@GetMapping("/cpf/{cpf}")
 	public  ResponseEntity<List<Cliente>> get( @PathVariable("cpf") String cpf) {
-		
 		List<Cliente> cliente = service.getClientesByCpf(cpf);
 		
 		if(cliente.isEmpty())
@@ -68,22 +75,22 @@ public class ClientesController {
 
 		if(ClienteValido(cliente))
 		{
-			map.put("Erro","Campos obrigatórios não preenchidos");
+			map.put(Strings.ERRO,Strings.ERRO_INCLUIR_CAMPOS_OBRIGATORIOS);
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 					
 		}if (ValidaCPF.isCPF(ValidaCPF.RemovePontuacao(cliente.getCpf())) != true){
-			map.put("Erro","CPF inválido");
+			map.put(Strings.ERRO,Strings.ERRO_CPF_INVALIDO);
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 		}else {
 			Cliente PostCliente = service.save(cliente);
 			if(PostCliente == null)
 			{
-				map.put("Erro","CPF já existente");
+				map.put(Strings.ERRO,Strings.ERRO_CPF_EXISTENTE);
 				return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);		
 			}	
 			else {
 				map.put("idCliente",PostCliente.getId().toString());
-				map.put("Status","Cliente incluido com sucesso");
+				map.put(Strings.STATUS,Strings.SUCESSO_INCLUIR_CLIENTE);
 				return new ResponseEntity<>(map,HttpStatus.OK);					
 			}
 		}
@@ -97,24 +104,32 @@ public class ClientesController {
         
         if (ClienteValido(cliente))
         {
-			map.put("Erro","Campos obrigatórios não preenchidos");
+			map.put(Strings.ERRO,Strings.ERRO_INCLUIR_CAMPOS_OBRIGATORIOS);
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
         }else {
         	Cliente cli = service.update(cliente, id);
         	
 			map.put("idCliente",cli.getId().toString());
-			map.put("Status","Cliente atualizado com sucesso");
+			map.put(Strings.STATUS,Strings.SUCESSO_ATUALIZAR_CLIENTE);
 			return new ResponseEntity<>(map,HttpStatus.OK);	
         }
 	}
 	
 	@CrossOrigin
 	@DeleteMapping("/{id}")
-	public String delete(@PathVariable("id") Long id) {
-	
-		service.delete(id);
-				
-		return "cliente deletado";
+	public ResponseEntity<HashMap<String, String>> delete(@PathVariable("id") Long id) {
+		HashMap<String, String> map = new HashMap<>();
+		List<Pedido> pedido = pedidoservice.getPedidoByidCliente(id.toString());
+		
+		if(pedido.isEmpty()) {
+			service.delete(id);
+			
+			map.put(Strings.STATUS,Strings.SUCESSO_EXCLUSAO_CLIENTE);
+			return new ResponseEntity<>(map,HttpStatus.OK);	
+		}else {
+			map.put(Strings.ERRO,Strings.ERRO_CLIENTE_TEM_PEDIDO);
+			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);	
+		}
 	}
 	
     private boolean ClienteValido(Cliente cliente) {
