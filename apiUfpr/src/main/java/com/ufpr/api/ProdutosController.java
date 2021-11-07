@@ -17,12 +17,14 @@ public class ProdutosController {
 
     @Autowired
     private ProdutoService service;
-
+	
+	@CrossOrigin
     @GetMapping()
     public ResponseEntity<Iterable<Produto>> get() {
         return new ResponseEntity<>(service.getProdutos(), HttpStatus.OK);
     }
-
+	
+	@CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<Produto> get(@PathVariable("id") Long id) {
 
@@ -34,7 +36,8 @@ public class ProdutosController {
             return ResponseEntity.notFound().build();
         }
     }
-
+	
+	@CrossOrigin
     @PostMapping
     public ResponseEntity<HashMap<String, String>> post(@RequestBody Produto produto) {
 
@@ -56,7 +59,8 @@ public class ProdutosController {
     private boolean produtoValido(Produto prod) {
         return prod.getDescricao() == null || prod.getDescricao().isEmpty();
     }
-
+	
+	@CrossOrigin
     @PutMapping("/{id}")
     public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Produto produto) {
 
@@ -74,7 +78,8 @@ public class ProdutosController {
             return new ResponseEntity<>(map, HttpStatus.OK);
         }
     }
-
+	
+	@CrossOrigin
     @DeleteMapping("/{id}")
     public ResponseEntity<HashMap<String, String>> delete(@PathVariable("id") Long id) {
 
