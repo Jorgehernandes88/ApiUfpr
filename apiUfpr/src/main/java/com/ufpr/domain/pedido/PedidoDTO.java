@@ -1,6 +1,7 @@
 package com.ufpr.domain.pedido;
 
 import com.ufpr.domain.Cliente;
+import com.ufpr.domain.ClienteService;
 import com.ufpr.domain.itemDoPedido.ItemDoPedido;
 import com.ufpr.domain.pedido.Pedido;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class PedidoDTO {
+
+    private ClienteService serviceCliente;
 
     private Long idPedido;
 
@@ -23,7 +26,7 @@ public class PedidoDTO {
         this.itensDoPedido = p.getItensDoPedido();
     }
 
-    public PedidoDTO(Optional<Pedido> pedido) {
+    public PedidoDTO() {
     }
 
     public Long getIdPedido() {

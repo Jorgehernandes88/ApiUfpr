@@ -1,7 +1,10 @@
 package com.ufpr.domain.pedido;
 import com.ufpr.domain.ClienteRepository;
+import com.ufpr.domain.produto.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +17,10 @@ public class PedidoService {
 
 	@Autowired
 	private ClienteRepository repCli;
+
+	public void setRepository(PedidoRepository repository){
+		this.rep = repository;
+	}
 		
 	public List<PedidoDTO> getPedido(){
 
@@ -30,10 +37,18 @@ public class PedidoService {
 		return pedidosDTO;
 	}
 	
-	public Optional<PedidoDTO> getPedidoById(Long id){
+	public PedidoDTO getPedidoById(Long id){
 
-		Optional<PedidoDTO> pedido = Optional.of(new PedidoDTO(rep.findById(id)));
+		PedidoDTO pedido = new PedidoDTO();
+
+		Optional<Pedido> itemPedido = rep.findById(id);
+		if(itemPedido.isPresent()){
+			pedido = new PedidoDTO(itemPedido.get());
+			pedido.setCliente(repCli.findById( Long.parseLong(itemPedido.get().getIdCliente())).get());
+		}
+
 		return pedido;
+
 	}
 	
 	public List<Pedido> getPedidoByidCliente(String idCliente){
@@ -43,7 +58,11 @@ public class PedidoService {
 		return pedido;
 	}
 
-	public Pedido save(Pedido pedido) {
-		return rep.save(pedido);
+	public Pedido save(Pedido pedido) throws Exception {
+		try {
+			return rep.save(pedido);
+		}catch (Exception ex){
+			throw new Exception();
+		}
 	}
 }

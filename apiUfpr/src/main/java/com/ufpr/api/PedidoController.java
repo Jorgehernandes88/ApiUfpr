@@ -1,9 +1,10 @@
 package com.ufpr.api;
 
-import java.util.Optional;
+import java.util.HashMap;
 
 import com.ufpr.domain.ClienteService;
 import com.ufpr.domain.pedido.PedidoDTO;
+import com.ufpr.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,45 +23,67 @@ import com.ufpr.domain.pedido.PedidoService;
 @RestController
 @RequestMapping("/api/v1/pedidos")
 public class PedidoController {
-	
-	@Autowired
-	private PedidoService service;
 
-	@Autowired
-	private ClienteService serviceCli;
+    @Autowired
+    private PedidoService service;
 
-	@Autowired
-	private ClienteService clienteService;
-	private ItemDoPedidoService servicePedido;
-	
-	@CrossOrigin
-	@GetMapping()
-	public ResponseEntity<Iterable<PedidoDTO>> get() {
-		return new ResponseEntity<>(service.getPedido(),HttpStatus.OK);
-	}
-	
-	@CrossOrigin
-	@GetMapping("/{id}")
-	public ResponseEntity<PedidoDTO> get(@PathVariable("id") Long id) {
-		
-		Optional<PedidoDTO> pedido = service.getPedidoById(id);
+    @Autowired
+    private ClienteService serviceCli;
 
-		
-		if(pedido.isPresent())
-		{
-			return ResponseEntity.ok().body(pedido.get());
-		}else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
-	@CrossOrigin
-	@PostMapping
-	public String post(@RequestBody Pedido pedido) {
-	
-		Pedido pedidos = service.save(pedido);
-		
-		return "[{idPedido: " + pedidos.getIdPedido() + "}]";
-	}
-	
+    @Autowired
+    private ClienteService clienteService;
+    private ItemDoPedidoService servicePedido;
+
+    @GetMapping()
+    public ResponseEntity<HashMap<String, String>> get() {
+        HashMap<String, String> map = new HashMap<>();
+
+        Iterable<PedidoDTO> pedidos = service.getPedido();
+        if (pedidos != null) {
+            return new ResponseEntity(pedidos, HttpStatus.OK);
+        } else {
+            map.put("Erro", "Não foi possivel buscar os pedidos");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public ResponseEntity<HashMap<String, String>> get(@PathVariable("id") Long id) {
+
+        try{
+            PedidoDTO pedido = service.getPedidoById(id);
+            if(pedido.getIdPedido()!=null)
+                return new ResponseEntity(pedido, HttpStatus.OK);
+            else{
+                return disparaPedidoNaoEncontrado();
+            }
+
+        }catch (Exception ex){
+            return disparaPedidoNaoEncontrado();
+        }
+    }
+
+    private ResponseEntity<HashMap<String, String>> disparaPedidoNaoEncontrado() {
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDO_ID);
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+    @CrossOrigin
+    @PostMapping
+    public ResponseEntity<HashMap<String, String>> post(@RequestBody Pedido itemPedido) {
+
+        HashMap<String, String> map = new HashMap<>();
+
+        try {
+            service.save(itemPedido);
+            map.put(Strings.STATUS, Strings.SUCESSO_INCLUIR_PEDIDO);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            map.put(Strings.ERRO, Strings.ERRO_INCLUIR_PEDIDO);
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

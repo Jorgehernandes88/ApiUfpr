@@ -3,10 +3,13 @@ package com.ufpr.utils;
 public class Strings {
     public static final String SUCESSO_EXCLUSAO_PRODUTO = "Produto excluido com sucesso";
     public static final String SUCESSO_INCLUIR_PRODUTO = "Produto incluído com sucesso";
+    public static final String SUCESSO_INCLUIR_PEDIDO = "Pedido incluído com sucesso";
     public static final String SUCESSO_ATUALIZAR_PRODUTO = "Produto atualizado com sucesso";
+    public static final String ERRO_BUSCAR_PEDIDO_ID = "Não foi possivel encontrar esse pedido";
     public static final String ERRO_EXCLUSAO_VINC_PEDIDO = "Este produto está vinculado a um pedido, exclua-o primeiro.";
     public static final String ERRO_EXCLUSAO_TENTE_NOVAMENTE = "Algo deu errado, tente novamente";
     public static final String ERRO_INCLUIR_CAMPO_DESCRICAO = "Campo descrição não preenchido";
+    public static final String ERRO_INCLUIR_PEDIDO = "Não foi possivel incluir esse pedido";
 
     public static final String SUCESSO_EXCLUSAO_CLIENTE = "Cliente excluido com sucesso";
     public static final String SUCESSO_INCLUIR_CLIENTE = "Cliente incluído com sucesso";
