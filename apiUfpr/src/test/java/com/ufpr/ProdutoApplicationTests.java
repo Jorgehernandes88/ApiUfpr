@@ -1,15 +1,12 @@
 package com.ufpr;
 
-import com.ufpr.api.ClientesController;
 import com.ufpr.api.ProdutosController;
 import com.ufpr.domain.produto.Produto;
 import com.ufpr.domain.produto.ProdutoRepository;
 import com.ufpr.domain.produto.ProdutoService;
-import com.ufpr.utils.Strings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,8 +26,6 @@ class ProdutoApplicationTests {
     public ProdutoService service;
 
     public ProdutoRepository repository;
-
-    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setup() {
