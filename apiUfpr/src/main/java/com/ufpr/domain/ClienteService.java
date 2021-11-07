@@ -9,32 +9,31 @@ import java.util.Optional;
 public class ClienteService {
 	
 	@Autowired
-	private ClienteRepository rep;
+	private ClienteRepository clienteRepository;
 		
 	public void setRepository(ClienteRepository repository) {
-		this.rep = repository;
+		this.clienteRepository = repository;
 		
 	}
 	
 	public Iterable<Cliente> getClientes(){
-		return rep.findAll();
+		return clienteRepository.findAll();
 	}
 	
 	public Optional<Cliente> getClienteById(Long id){
-		return rep.findById(id);
+		return clienteRepository.findById(id);
 	}
 	
 	public List<Cliente> getClientesByCpf(String cpf){
-		return rep.findByCpf(cpf);
+		return clienteRepository.findByCpf(cpf);
 	}
 
 	public Cliente save(Cliente cliente) {
 
-		//Buscar o cliente no banco de dados
 		List<Cliente> clientes = getClientesByCpf(cliente.getCpf());
 		if(clientes.isEmpty())
 		{
-			return rep.save(cliente);
+			return clienteRepository.save(cliente);
 		}
 		else {
 			return null;
@@ -45,19 +44,16 @@ public class ClienteService {
 	public Cliente update(Cliente cliente, Long id) {
 		
 		Assert.notNull(id,"Não foi possivel atualizar o registro");
-		//Buscar o cliente no banco de dados
 		Optional<Cliente> optional = getClienteById(id);
+		
 		if(optional.isPresent())
 		{
 			Cliente bd = optional.get();
-			// Copiar as propriedades
 			bd.setNome(cliente.getNome());
 			bd.setSobreNome(cliente.getSobreNome());
 			System.out.println("Cliente ID: " + bd.getId());
 			
-			//Atualizar o registro
-			rep.save(bd);
-			
+			clienteRepository.save(bd);
 			return bd;
 		}
 		else {
@@ -67,11 +63,10 @@ public class ClienteService {
 	
 	public void delete(Long id)
 	{
-		//Buscar o cliente no banco de dados
 		Optional<Cliente> cliente = getClienteById(id);
 		if(cliente.isPresent())
 		{
-			rep.deleteById(id);
+			clienteRepository.deleteById(id);
 		}
 		
 	}
