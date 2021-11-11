@@ -34,6 +34,7 @@ public class PedidoController {
     private ClienteService clienteService;
     private ItemDoPedidoService servicePedido;
 
+    @CrossOrigin
     @GetMapping()
     public ResponseEntity<HashMap<String, String>> get() {
         HashMap<String, String> map = new HashMap<>();
