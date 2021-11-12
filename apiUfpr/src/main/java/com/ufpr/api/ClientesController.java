@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ufpr.domain.ClienteService;
 import com.ufpr.domain.pedido.Pedido;
+import com.ufpr.domain.pedido.PedidoDTO;
 import com.ufpr.domain.pedido.PedidoService;
 import com.ufpr.domain.validadores.ValidaCPF;
 import com.ufpr.utils.Strings;
@@ -116,7 +117,7 @@ public class ClientesController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HashMap<String, String>> delete(@PathVariable("id") Long id) {
 		HashMap<String, String> map = new HashMap<>();
-		List<Pedido> pedido = pedidoservice.getPedidoByidCliente(id.toString());
+		List<PedidoDTO> pedido = pedidoservice.getPedidoByidCliente(id.toString());
 		
 		if(pedido.isEmpty()) {
 			service.delete(id);

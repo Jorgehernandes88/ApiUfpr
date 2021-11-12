@@ -51,13 +51,21 @@ public class PedidoService {
 
 	}
 	
-	public List<Pedido> getPedidoByidCliente(String idCliente){
+	public List<PedidoDTO> getPedidoByidCliente(String idCliente){
 
-		List<Pedido> pedido = rep.findByidCliente(idCliente);
+		List<Pedido> pedidos = rep.findByidCliente(idCliente);
 		
-		return pedido;
-	}
+		List<PedidoDTO> pedidosDTO = new ArrayList<>();
+		
+		for (Pedido p : pedidos){
+			PedidoDTO newPedido = new PedidoDTO(p);
+			newPedido.setCliente(repCli.findById( Long.parseLong(p.getIdCliente())).get());
+			pedidosDTO.add(newPedido);
+		}
 
+		return pedidosDTO;
+	}
+	
 	public Pedido save(Pedido pedido) throws Exception {
 		try {
 			return rep.save(pedido);

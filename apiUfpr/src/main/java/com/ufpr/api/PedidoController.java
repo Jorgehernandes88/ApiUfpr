@@ -1,7 +1,10 @@
 package com.ufpr.api;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
+import com.ufpr.domain.Cliente;
 import com.ufpr.domain.ClienteService;
 import com.ufpr.domain.pedido.PedidoDTO;
 import com.ufpr.utils.Strings;
@@ -63,6 +66,39 @@ public class PedidoController {
         }catch (Exception ex){
             return disparaPedidoNaoEncontrado();
         }
+    }
+    
+    @CrossOrigin
+    @GetMapping("/ClienteCpf/{cpf}")
+    public ResponseEntity<HashMap<String, String>> get(@PathVariable("cpf") String cpf) {
+    	
+    	HashMap<String, String> map = new HashMap<>();
+    	Cliente cliente;
+    	String IdCliente = "";
+    	
+    	List<Cliente> clientes = serviceCli.getClientesByCpf(cpf);
+    	
+    	if (clientes.isEmpty())
+    	{
+    		map.put(Strings.ERRO, Strings.ERRO_CLIENTE_NAO_ENCONTRADO);
+    		return new ResponseEntity(map, HttpStatus.OK);
+    	}else {
+    		
+    		for (int i = 0; i < clientes.size(); i++) {
+    			cliente = clientes.get(i);
+				IdCliente = cliente.getId().toString();
+			}
+    		
+    		List<PedidoDTO> pedidos = service.getPedidoByidCliente(IdCliente);  		
+
+    		if(pedidos.isEmpty())
+    		{
+        		map.put(Strings.STATUS, Strings.SUCESSO_LISTA_PEDIDO_VAZIA);
+        		return new ResponseEntity(map, HttpStatus.OK);
+    		}else {
+        		return new ResponseEntity(pedidos, HttpStatus.OK);
+    		}
+       }
     }
 
     private ResponseEntity<HashMap<String, String>> disparaPedidoNaoEncontrado() {
