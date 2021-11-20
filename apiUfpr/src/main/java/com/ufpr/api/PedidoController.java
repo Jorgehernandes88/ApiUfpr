@@ -50,7 +50,7 @@ public class PedidoController {
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
     }
-
+    
     @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<HashMap<String, String>> get(@PathVariable("id") Long id) {
@@ -66,6 +66,13 @@ public class PedidoController {
         }catch (Exception ex){
             return disparaPedidoNaoEncontrado();
         }
+    }
+    
+    private ResponseEntity<HashMap<String, String>> disparaPedidoNaoEncontrado() {
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDO_ID);
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
     
     @CrossOrigin
@@ -99,13 +106,6 @@ public class PedidoController {
         		return new ResponseEntity(pedidos, HttpStatus.OK);
     		}
        }
-    }
-
-    private ResponseEntity<HashMap<String, String>> disparaPedidoNaoEncontrado() {
-        HashMap<String, String> map = new HashMap<>();
-
-        map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDO_ID);
-        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin

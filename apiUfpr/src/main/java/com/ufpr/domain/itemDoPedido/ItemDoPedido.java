@@ -15,20 +15,16 @@ import com.ufpr.domain.produto.Produto;
 @Table(name = "ItemDoPedido")
 public class ItemDoPedido {
 	
-	//Chave primaria tabela ItemDoPedido
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idItemDoPedido")
 	private Long idItemDoPedido;
 	
-	//Quantidade de itens
 	private int quantidade;
 	
-	//ID do Cliente
 	@Column(name = "Pedido_Cliente_idCliente")
 	private String idCliente;
 
-	//Produto
 	@ManyToOne
 	@JoinColumn(name="Produto_idProduto", nullable=false)
 	private Produto produto;

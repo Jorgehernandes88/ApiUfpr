@@ -101,8 +101,6 @@ public class ProdutosController {
         if (e.getMessage().equals(Strings.ERRO_MENSAGEM_RESTRICAO)) {
             map.put(Strings.ERRO, Strings.ERRO_EXCLUSAO_VINC_PEDIDO);
         } else {
-
-            System.out.println(e.getMessage());
             map.put(Strings.ERRO, Strings.ERRO_EXCLUSAO_TENTE_NOVAMENTE);
         }
         return map;

@@ -25,7 +25,6 @@ public class PedidoService {
 	public List<PedidoDTO> getPedido(){
 
 		List<Pedido> pedidos = rep.findAll();
-
 		List<PedidoDTO> pedidosDTO = new ArrayList<>();
 
 		for (Pedido p : pedidos){
@@ -40,8 +39,8 @@ public class PedidoService {
 	public PedidoDTO getPedidoById(Long id){
 
 		PedidoDTO pedido = new PedidoDTO();
-
 		Optional<Pedido> itemPedido = rep.findById(id);
+
 		if(itemPedido.isPresent()){
 			pedido = new PedidoDTO(itemPedido.get());
 			pedido.setCliente(repCli.findById( Long.parseLong(itemPedido.get().getIdCliente())).get());
@@ -54,7 +53,6 @@ public class PedidoService {
 	public List<PedidoDTO> getPedidoByidCliente(String idCliente){
 
 		List<Pedido> pedidos = rep.findByidCliente(idCliente);
-		
 		List<PedidoDTO> pedidosDTO = new ArrayList<>();
 		
 		for (Pedido p : pedidos){

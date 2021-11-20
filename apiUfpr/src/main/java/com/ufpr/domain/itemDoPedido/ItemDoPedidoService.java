@@ -23,11 +23,9 @@ public class ItemDoPedidoService {
 	public Optional<ItemDoPedido> getItemDoPedidoById(Long id){
 		return rep.findById(id);
 	}
-	
 
 	public ItemDoPedido save(ItemDoPedido ItemDoPedido) {
 		return rep.save(ItemDoPedido);
 	}
-	
-	
+
 }

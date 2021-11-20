@@ -33,26 +33,21 @@ public class PedidoDTO {
         return idPedido;
     }
 
-
     public void setIdPedido(Long idPedido) {
         this.idPedido = idPedido;
     }
-
 
     public String getData() {
         return data;
     }
 
-
     public void setData(String data) {
         this.data =  data;
     }
 
-
     public Cliente getCliente() {
         return cliente;
     }
-
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;

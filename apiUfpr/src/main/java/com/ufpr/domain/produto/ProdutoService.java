@@ -60,9 +60,9 @@ public class ProdutoService {
                 rep.deleteById(id);
             }
         }
-    catch(Exception ex)
-    {
-        throw  ex;
-    }
+	    catch(Exception ex)
+	    {
+	        throw  ex;
+	    }
     }
 }

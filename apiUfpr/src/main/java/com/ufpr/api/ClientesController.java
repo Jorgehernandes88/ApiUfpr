@@ -50,7 +50,7 @@ public class ClientesController {
 			return ResponseEntity.ok(cliente.get());
 		}else {
 			return ResponseEntity.notFound().build();
-		}
+		}	
 	}
 	
 	@CrossOrigin
@@ -119,15 +119,19 @@ public class ClientesController {
 		HashMap<String, String> map = new HashMap<>();
 		List<PedidoDTO> pedido = pedidoservice.getPedidoByidCliente(id.toString());
 		
+		HttpStatus statusResponse;
+		
 		if(pedido.isEmpty()) {
 			service.delete(id);
 			
 			map.put(Strings.STATUS,Strings.SUCESSO_EXCLUSAO_CLIENTE);
-			return new ResponseEntity<>(map,HttpStatus.OK);	
+			statusResponse = HttpStatus.OK;	
 		}else {
 			map.put(Strings.ERRO,Strings.ERRO_CLIENTE_TEM_PEDIDO);
-			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);	
+			statusResponse =  HttpStatus.BAD_REQUEST;	
 		}
+		
+		return new ResponseEntity<>(map,statusResponse);	
 	}
 	
     private boolean ClienteValido(Cliente cliente) {

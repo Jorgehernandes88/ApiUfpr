@@ -2,15 +2,8 @@ package com.ufpr.domain.pedido;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
-import javax.xml.crypto.Data;
-
-import com.ufpr.domain.Cliente;
 import com.ufpr.domain.itemDoPedido.ItemDoPedido;
-
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 
 @Entity
 @Table(name = "Pedido")
