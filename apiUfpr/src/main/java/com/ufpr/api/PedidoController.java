@@ -1,7 +1,6 @@
 package com.ufpr.api;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import com.ufpr.domain.Cliente;
@@ -56,7 +55,7 @@ public class PedidoController {
     public ResponseEntity<HashMap<String, String>> get(@PathVariable("id") Long id) {
 
         try{
-            PedidoDTO pedido = service.getPedidoById(id);
+            PedidoDTO pedido = service.getPedidoPorId(id);
             if(pedido.getIdPedido()!=null)
                 return new ResponseEntity(pedido, HttpStatus.OK);
             else{
@@ -89,7 +88,7 @@ public class PedidoController {
 				IdCliente = cliente.getId().toString();
 			}
     		
-    		List<PedidoDTO> pedidos = service.getPedidoByidCliente(IdCliente);  		
+    		List<PedidoDTO> pedidos = service.getPedidoPorIdCliente(IdCliente);
 
     		if(pedidos.isEmpty())
     		{

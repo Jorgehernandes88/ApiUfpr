@@ -1,10 +1,9 @@
 package com.ufpr.domain.pedido;
+
 import com.ufpr.domain.ClienteRepository;
-import com.ufpr.domain.produto.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,65 +11,61 @@ import java.util.Optional;
 @Service
 public class PedidoService {
 
-	@Autowired
-	private PedidoRepository rep;
+    @Autowired
+    private PedidoRepository repositorio;
 
-	@Autowired
-	private ClienteRepository repCli;
+    @Autowired
+    private ClienteRepository repositorioCliente;
 
-	public void setRepository(PedidoRepository repository){
-		this.rep = repository;
-	}
-		
-	public List<PedidoDTO> getPedido(){
+    public void setRepository(PedidoRepository repository) {
+        this.repositorio = repository;
+    }
 
-		List<Pedido> pedidos = rep.findAll();
+    public List<PedidoDTO> getPedido() {
 
-		List<PedidoDTO> pedidosDTO = new ArrayList<>();
+        List<Pedido> pedidos = repositorio.findAll();
 
-		for (Pedido p : pedidos){
-			PedidoDTO newPedido = new PedidoDTO(p);
-			newPedido.setCliente(repCli.findById( Long.parseLong(p.getIdCliente())).get());
-			pedidosDTO.add(newPedido);
-		}
+        List<PedidoDTO> pedidosDTO = new ArrayList<>();
 
-		return pedidosDTO;
-	}
-	
-	public PedidoDTO getPedidoById(Long id){
+        for (Pedido p : pedidos) {
+            PedidoDTO pedido = new PedidoDTO(p);
+            pedido.setCliente(repositorioCliente.findById(Long.parseLong(p.getIdCliente())).get());
+            pedidosDTO.add(pedido);
+        }
 
-		PedidoDTO pedido = new PedidoDTO();
+        return pedidosDTO;
+    }
 
-		Optional<Pedido> itemPedido = rep.findById(id);
-		if(itemPedido.isPresent()){
-			pedido = new PedidoDTO(itemPedido.get());
-			pedido.setCliente(repCli.findById( Long.parseLong(itemPedido.get().getIdCliente())).get());
-		}
+    public PedidoDTO getPedidoPorId(Long id) {
 
-		return pedido;
+        PedidoDTO pedido = new PedidoDTO();
 
-	}
-	
-	public List<PedidoDTO> getPedidoByidCliente(String idCliente){
+        Optional<Pedido> itemPedido = repositorio.findById(id);
+        if (itemPedido.isPresent()) {
+            pedido = new PedidoDTO(itemPedido.get());
+            pedido.setCliente(repositorioCliente.findById(Long.parseLong(itemPedido.get().getIdCliente())).get());
+        }
 
-		List<Pedido> pedidos = rep.findByidCliente(idCliente);
-		
-		List<PedidoDTO> pedidosDTO = new ArrayList<>();
-		
-		for (Pedido p : pedidos){
-			PedidoDTO newPedido = new PedidoDTO(p);
-			newPedido.setCliente(repCli.findById( Long.parseLong(p.getIdCliente())).get());
-			pedidosDTO.add(newPedido);
-		}
+        return pedido;
 
-		return pedidosDTO;
-	}
-	
-	public Pedido save(Pedido pedido) throws Exception {
-		try {
-			return rep.save(pedido);
-		}catch (Exception ex){
-			throw new Exception();
-		}
-	}
+    }
+
+    public List<PedidoDTO> getPedidoPorIdCliente(String idCliente) {
+
+        List<Pedido> pedidos = repositorio.findByidCliente(idCliente);
+
+        List<PedidoDTO> pedidosDTO = new ArrayList<>();
+
+        for (Pedido p : pedidos) {
+            PedidoDTO novoPedido = new PedidoDTO(p);
+            novoPedido.setCliente(repositorioCliente.findById(Long.parseLong(p.getIdCliente())).get());
+            pedidosDTO.add(novoPedido);
+        }
+
+        return pedidosDTO;
+    }
+
+    public Pedido save(Pedido pedido) {
+        return repositorio.save(pedido);
+    }
 }

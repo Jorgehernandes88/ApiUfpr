@@ -1,5 +1,6 @@
 package com.ufpr.domain.produto;
 
+import com.ufpr.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -10,59 +11,56 @@ import java.util.Optional;
 public class ProdutoService {
 
     @Autowired
-    private ProdutoRepository rep;
+    private ProdutoRepository repositorio;
 
-    public void setRepository(ProdutoRepository repository){
-        this.rep = repository;
+    public void setRepository(ProdutoRepository repository) {
+        this.repositorio = repository;
     }
 
-    public Iterable<Produto> getProdutos(){
-        return rep.findAll();
+    public Iterable<Produto> getProdutos() {
+        return repositorio.findAll();
     }
 
-    public Optional<Produto> getProdutoById(Long id){
-        return rep.findById(id);
+    public Optional<Produto> getProdutoPorId(Long id) {
+        return repositorio.findById(id);
     }
 
     public Produto save(Produto produto) {
-        return rep.save(produto);
+        return repositorio.save(produto);
     }
 
     public Produto update(Produto prod, Long id) {
 
-        Assert.notNull(id,"Não foi possivel atualizar o registro");
-        //Buscar o produto no banco de dados
-        Optional<Produto> optional = getProdutoById(id);
-        if(optional.isPresent())
-        {
-            Produto bd = optional.get();
+        Assert.notNull(id, Strings.ERRO_ATUALIZAR_REGISTRO);
 
-            // Copiar as propriedades
-            bd.setDescricao(prod.getDescricao());
-            System.out.println("Produto ID: " + bd.getId());
+        Optional<Produto> optional = getProdutoPorId(id);
 
-            //Atualizar o registro
-            rep.save(bd);
+        if (optional.isPresent())
+            return AtualizaProduto(optional, prod);
+        else
+            throw new RuntimeException(Strings.ERRO_ATUALIZAR_REGISTRO);
 
-            return bd;
-        }
-        else {
-            throw new RuntimeException("Não foi possivel atualizar o registro");
-        }
     }
 
-    public void delete(Long id) throws Exception
-    {
+    private Produto AtualizaProduto(Optional<Produto> optional, Produto prod) {
+
+        Produto produto = optional.get();
+        produto.setDescricao(prod.getDescricao());
+        repositorio.save(produto);
+
+        return produto;
+    }
+
+    public void delete(Long id) throws Exception {
         try {
-            //Buscar o produto no banco de dados
-            Optional<Produto> produto = getProdutoById(id);
-            if (produto.isPresent()) {
-                rep.deleteById(id);
-            }
+
+            Optional<Produto> produto = getProdutoPorId(id);
+
+            if (produto.isPresent())
+                repositorio.deleteById(id);
+
+        } catch (Exception ex) {
+            throw ex;
         }
-    catch(Exception ex)
-    {
-        throw  ex;
-    }
     }
 }
