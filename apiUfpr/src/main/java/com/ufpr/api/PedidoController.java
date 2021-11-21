@@ -46,7 +46,7 @@ public class PedidoController {
         if (pedidos != null) {
             return new ResponseEntity(pedidos, HttpStatus.OK);
         } else {
-            map.put("Erro", "Não foi possivel buscar os pedidos");
+            map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDOS);
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
     }

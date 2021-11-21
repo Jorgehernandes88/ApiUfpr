@@ -20,6 +20,7 @@ public class Strings {
     public static final String ERRO_CPF_EXISTENTE = "CPF já existente";
     public static final String ERRO_CLIENTE_TEM_PEDIDO = "Esse cliente está associado a Pedidos";
     public static final String ERRO_CLIENTE_NAO_ENCONTRADO = "Cliente não encontrado";
+    public static final String ERRO_BUSCAR_PEDIDOS = "Não foi possivel buscar os pedidos";
     
     public static final String ERRO_MENSAGEM_RESTRICAO = "could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement";
     public static final String ERRO = "Erro";
