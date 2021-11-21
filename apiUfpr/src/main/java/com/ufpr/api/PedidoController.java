@@ -82,7 +82,7 @@ public class PedidoController {
     	Cliente cliente;
     	String IdCliente = "";
     	
-    	List<Cliente> clientes = serviceCli.getClientesByCpf(cpf);
+    	List<Cliente> clientes = serviceCli.getClientesPorCpf(cpf);
     	
     	if (clientes.isEmpty())
     	{

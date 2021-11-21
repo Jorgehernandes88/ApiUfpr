@@ -42,7 +42,7 @@ public class ClientesController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> get( @PathVariable("id") Long id) {
 		
-		Optional<Cliente> cliente = service.getClienteById(id);
+		Optional<Cliente> cliente = service.getClientePorId(id);
 		
 		if(cliente.isPresent())
 		{
@@ -55,7 +55,7 @@ public class ClientesController {
 	@CrossOrigin
 	@GetMapping("/cpf/{cpf}")
 	public  ResponseEntity<List<Cliente>> get( @PathVariable("cpf") String cpf) {
-		List<Cliente> cliente = service.getClientesByCpf(cpf);
+		List<Cliente> cliente = service.getClientesPorCpf(cpf);
 		
 		if(cliente.isEmpty())
 		{

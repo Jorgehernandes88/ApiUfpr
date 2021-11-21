@@ -1,73 +1,68 @@
 package com.ufpr.domain;
+
+import com.ufpr.utils.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ClienteService {
-	
-	@Autowired
-	private ClienteRepository clienteRepository;
-		
-	public void setRepository(ClienteRepository repository) {
-		this.clienteRepository = repository;
-		
-	}
-	
-	public Iterable<Cliente> getClientes(){
-		return clienteRepository.findAll();
-	}
-	
-	public Optional<Cliente> getClienteById(Long id){
-		return clienteRepository.findById(id);
-	}
-	
-	public List<Cliente> getClientesByCpf(String cpf){
-		return clienteRepository.findByCpf(cpf);
-	}
 
-	public Cliente save(Cliente cliente) {
+    @Autowired
+    private ClienteRepository repositorio;
 
-		List<Cliente> clientes = getClientesByCpf(cliente.getCpf());
-		if(clientes.isEmpty())
-		{
-			return clienteRepository.save(cliente);
-		}
-		else {
-			return null;
-		}
-		
-	}
-	
-	public Cliente update(Cliente cliente, Long id) {
-		
-		Assert.notNull(id,"Não foi possivel atualizar o registro");
-		Optional<Cliente> optional = getClienteById(id);
-		
-		if(optional.isPresent())
-		{
-			Cliente bd = optional.get();
-			bd.setNome(cliente.getNome());
-			bd.setSobreNome(cliente.getSobreNome());
-			System.out.println("Cliente ID: " + bd.getId());
-			
-			clienteRepository.save(bd);
-			return bd;
-		}
-		else {
-			throw new RuntimeException("Não foi possivel atualizar o registro");
-		}
-	}
-	
-	public void delete(Long id)
-	{
-		Optional<Cliente> cliente = getClienteById(id);
-		if(cliente.isPresent())
-		{
-			clienteRepository.deleteById(id);
-		}
-		
-	}
+    public void setRepository(ClienteRepository repository) {
+        this.repositorio = repository;
+    }
+
+    public Iterable<Cliente> getClientes() {
+        return repositorio.findAll();
+    }
+
+    public Optional<Cliente> getClientePorId(Long id) {
+        return repositorio.findById(id);
+    }
+
+    public List<Cliente> getClientesPorCpf(String cpf) {
+        return repositorio.findByCpf(cpf);
+    }
+
+    public Cliente save(Cliente cliente) {
+
+        List<Cliente> clientes = getClientesPorCpf(cliente.getCpf());
+
+        if (clientes.isEmpty()) {
+            return repositorio.save(cliente);
+        } else {
+            return null;
+        }
+
+    }
+
+    public Cliente update(Cliente novosDadosCliente, Long id) {
+
+        Assert.notNull(id, Strings.ERRO_ATUALIZAR_REGISTRO);
+
+        Optional<Cliente> cliente = getClientePorId(id);
+
+        if (cliente.isPresent()) {
+            return atualizaCliente(novosDadosCliente, cliente);
+        } else {
+            throw new RuntimeException(Strings.ERRO_ATUALIZAR_REGISTRO);
+        }
+    }
+
+    private Cliente atualizaCliente(Cliente novosDadosCliente, Optional<Cliente> cliente) {
+        cliente.get().setNome(novosDadosCliente.getNome());
+        cliente.get().setSobreNome(novosDadosCliente.getSobreNome());
+
+        return repositorio.save(cliente.get());
+    }
+
+    public void delete(Long id) {
+        repositorio.deleteById(id);
+    }
 }
