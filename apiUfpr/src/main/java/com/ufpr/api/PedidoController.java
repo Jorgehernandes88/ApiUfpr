@@ -84,8 +84,6 @@ public class PedidoController {
     	
     	HashMap<String, String> map = new HashMap<>();
     	ResponseEntity<HashMap<String, String>> statusResponse;
-    	Cliente cliente;
-    	String IdCliente = "";
 
     	List<Cliente> clientes = serviceCli.getClientesPorCpf(cpf);
     	
@@ -94,23 +92,31 @@ public class PedidoController {
     		map.put(Strings.ERRO, Strings.ERRO_CLIENTE_NAO_ENCONTRADO);
     		statusResponse =  new ResponseEntity(map, HttpStatus.OK);
     	}else {
-    		
-    		for (int i = 0; i < clientes.size(); i++) {
-    			cliente = clientes.get(i);
-				IdCliente = cliente.getId().toString();
-			}
-    		
-    		List<PedidoDTO> pedidos = service.getPedidoPorIdCliente(IdCliente);
-
-    		if(pedidos.isEmpty())
-    		{
-        		map.put(Strings.STATUS, Strings.SUCESSO_LISTA_PEDIDO_VAZIA);
-        		statusResponse =  new ResponseEntity(map, HttpStatus.OK);
-    		}else {
-    			statusResponse =  new ResponseEntity(pedidos, HttpStatus.OK);
-    		}
-       }
+            statusResponse = buscarClienteCPF(map, clientes);
+        }
     	return statusResponse;
+    }
+
+    private ResponseEntity<HashMap<String, String>> buscarClienteCPF(HashMap<String, String> map, List<Cliente> clientes) {
+        ResponseEntity<HashMap<String, String>> statusResponse;
+        Cliente cliente;
+        String idCliente = "";
+
+        for (int i = 0; i < clientes.size(); i++) {
+            cliente = clientes.get(i);
+            idCliente = cliente.getId().toString();
+        }
+
+        List<PedidoDTO> pedidos = service.getPedidoPorIdCliente(idCliente);
+
+        if(pedidos.isEmpty())
+        {
+            map.put(Strings.STATUS, Strings.SUCESSO_LISTA_PEDIDO_VAZIA);
+            statusResponse =  new ResponseEntity(map, HttpStatus.OK);
+        }else {
+            statusResponse =  new ResponseEntity(pedidos, HttpStatus.OK);
+        }
+        return statusResponse;
     }
 
     @CrossOrigin

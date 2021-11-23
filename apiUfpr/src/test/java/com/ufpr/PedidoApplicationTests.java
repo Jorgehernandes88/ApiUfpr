@@ -53,8 +53,8 @@ class PedidoApplicationTests {
     @Test
     void deveInserirPedido() {
         Produto produto = new Produto();
-        produto.setId(1l);
-        produto.setDescricao("teste");
+        produto.setId(5l);
+        produto.setDescricao("Borracha");
 
         ItemDoPedido itemDoPedido = new ItemDoPedido();
         itemDoPedido.setIdItemDoPedido(100l);
