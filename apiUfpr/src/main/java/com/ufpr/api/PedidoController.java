@@ -40,31 +40,35 @@ public class PedidoController {
     @GetMapping()
     public ResponseEntity<HashMap<String, String>> get() {
         HashMap<String, String> map = new HashMap<>();
-
+        ResponseEntity<HashMap<String, String>> statusResponse;
+        
         Iterable<PedidoDTO> pedidos = service.getPedido();
         if (pedidos != null) {
-            return new ResponseEntity(pedidos, HttpStatus.OK);
+        	statusResponse =  new ResponseEntity(pedidos, HttpStatus.OK);
         } else {
             map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDOS);
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+            statusResponse =  new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
+        return statusResponse;
     }
     
     @CrossOrigin
     @GetMapping("/{id}")
     public ResponseEntity<HashMap<String, String>> get(@PathVariable("id") Long id) {
-
+    	ResponseEntity<HashMap<String, String>> statusResponse;
+    	
         try{
             PedidoDTO pedido = service.getPedidoPorId(id);
             if(pedido.getIdPedido()!=null)
-                return new ResponseEntity(pedido, HttpStatus.OK);
+            	statusResponse =  new ResponseEntity(pedido, HttpStatus.OK);
             else{
-                return disparaPedidoNaoEncontrado();
+            	statusResponse =  disparaPedidoNaoEncontrado();
             }
 
         }catch (Exception ex){
-            return disparaPedidoNaoEncontrado();
+        	statusResponse =  disparaPedidoNaoEncontrado();
         }
+        return statusResponse;
     }
     
     private ResponseEntity<HashMap<String, String>> disparaPedidoNaoEncontrado() {
@@ -79,15 +83,16 @@ public class PedidoController {
     public ResponseEntity<HashMap<String, String>> get(@PathVariable("cpf") String cpf) {
     	
     	HashMap<String, String> map = new HashMap<>();
+    	ResponseEntity<HashMap<String, String>> statusResponse;
     	Cliente cliente;
     	String IdCliente = "";
-    	
+
     	List<Cliente> clientes = serviceCli.getClientesPorCpf(cpf);
     	
     	if (clientes.isEmpty())
     	{
     		map.put(Strings.ERRO, Strings.ERRO_CLIENTE_NAO_ENCONTRADO);
-    		return new ResponseEntity(map, HttpStatus.OK);
+    		statusResponse =  new ResponseEntity(map, HttpStatus.OK);
     	}else {
     		
     		for (int i = 0; i < clientes.size(); i++) {
@@ -100,26 +105,27 @@ public class PedidoController {
     		if(pedidos.isEmpty())
     		{
         		map.put(Strings.STATUS, Strings.SUCESSO_LISTA_PEDIDO_VAZIA);
-        		return new ResponseEntity(map, HttpStatus.OK);
+        		statusResponse =  new ResponseEntity(map, HttpStatus.OK);
     		}else {
-        		return new ResponseEntity(pedidos, HttpStatus.OK);
+    			statusResponse =  new ResponseEntity(pedidos, HttpStatus.OK);
     		}
        }
+    	return statusResponse;
     }
 
     @CrossOrigin
     @PostMapping
     public ResponseEntity<HashMap<String, String>> post(@RequestBody Pedido itemPedido) {
-
         HashMap<String, String> map = new HashMap<>();
-
+        ResponseEntity<HashMap<String, String>> statusResponse;
         try {
             service.save(itemPedido);
             map.put(Strings.STATUS, Strings.SUCESSO_INCLUIR_PEDIDO);
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            statusResponse = new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             map.put(Strings.ERRO, Strings.ERRO_INCLUIR_PEDIDO);
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+            statusResponse = new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
+        return statusResponse;
     }
 }

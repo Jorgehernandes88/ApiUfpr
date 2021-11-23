@@ -41,75 +41,82 @@ public class ClientesController {
 	@CrossOrigin
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> get( @PathVariable("id") Long id) {
-		
 		Optional<Cliente> cliente = service.getClientePorId(id);
+		ResponseEntity statusResponse;
 		
 		if(cliente.isPresent())
 		{
-			return ResponseEntity.ok(cliente.get());
+			statusResponse =  ResponseEntity.ok(cliente.get());
 		}else {
-			return ResponseEntity.notFound().build();
+			statusResponse =  ResponseEntity.notFound().build();
 		}	
+		
+		return statusResponse;
 	}
 	
 	@CrossOrigin
 	@GetMapping("/cpf/{cpf}")
 	public  ResponseEntity<List<Cliente>> get( @PathVariable("cpf") String cpf) {
 		List<Cliente> cliente = service.getClientesPorCpf(cpf);
+		ResponseEntity statusResponse;
 		
 		if(cliente.isEmpty())
 		{
-			return ResponseEntity.noContent().build();
+			statusResponse =  ResponseEntity.noContent().build();
 		}else {
-			return ResponseEntity.ok(cliente);
+			statusResponse =  ResponseEntity.ok(cliente);
 		}
+		return statusResponse;
 	}
 	
 	@CrossOrigin
 	@PostMapping
 	public ResponseEntity<HashMap<String, String>> post(@RequestBody Cliente cliente) {
 		HashMap<String, String> map = new HashMap<>();
-
-		if(ClienteValido(cliente))
+		ResponseEntity<HashMap<String, String>> statusResponse;
+		
+		if(clienteInvalido(cliente))
 		{
 			map.put(Strings.ERRO,Strings.ERRO_INCLUIR_CAMPOS_OBRIGATORIOS);
-			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+			statusResponse =  new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 					
 		}if (CPF.valido(CPF.removePontuacao(cliente.getCpf())) != true){
 			map.put(Strings.ERRO,Strings.ERRO_CPF_INVALIDO);
-			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+			statusResponse =  new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 		}else {
 			Cliente PostCliente = service.save(cliente);
 			if(PostCliente == null)
 			{
 				map.put(Strings.ERRO,Strings.ERRO_CPF_EXISTENTE);
-				return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);		
+				statusResponse =  new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);		
 			}	
 			else {
 				map.put("idCliente",PostCliente.getId().toString());
 				map.put(Strings.STATUS,Strings.SUCESSO_INCLUIR_CLIENTE);
-				return new ResponseEntity<>(map,HttpStatus.OK);					
+				statusResponse =  new ResponseEntity<>(map,HttpStatus.OK);					
 			}
 		}
+		return statusResponse;
 	}
 	
 	@CrossOrigin
 	@PutMapping("/{id}")
 	public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
-			
         HashMap<String, String> map = new HashMap<>();
+        ResponseEntity<HashMap<String, String>> statusResponse;
         
-        if (ClienteValido(cliente))
+        if (clienteInvalido(cliente))
         {
 			map.put(Strings.ERRO,Strings.ERRO_INCLUIR_CAMPOS_OBRIGATORIOS);
-			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+			statusResponse =  new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
         }else {
         	Cliente cli = service.update(cliente, id);
         	
 			map.put("idCliente",cli.getId().toString());
 			map.put(Strings.STATUS,Strings.SUCESSO_ATUALIZAR_CLIENTE);
-			return new ResponseEntity<>(map,HttpStatus.OK);	
+			statusResponse =  new ResponseEntity<>(map,HttpStatus.OK);	
         }
+        return statusResponse;
 	}
 	
 	@CrossOrigin
@@ -117,7 +124,6 @@ public class ClientesController {
 	public ResponseEntity<HashMap<String, String>> delete(@PathVariable("id") Long id) {
 		HashMap<String, String> map = new HashMap<>();
 		List<PedidoDTO> pedido = pedidoservice.getPedidoPorIdCliente(id.toString());
-		
 		HttpStatus statusResponse;
 		
 		if(pedido.isEmpty()) {
@@ -133,7 +139,7 @@ public class ClientesController {
 		return new ResponseEntity<>(map,statusResponse);	
 	}
 	
-    private boolean ClienteValido(Cliente cliente) {
+    private boolean clienteInvalido(Cliente cliente) {
         return cliente.getNome() == "" | cliente.getSobreNome() == "" | cliente.getCpf() == "" 
         		| cliente.getNome() == null | cliente.getSobreNome() == null | cliente.getCpf() == null;
     }
