@@ -28,7 +28,7 @@ public class ProdutosController {
     @GetMapping("/{id}")
     public ResponseEntity<Produto> get(@PathVariable("id") Long id) {
 
-        Optional<Produto> produto = service.getProdutoById(id);
+        Optional<Produto> produto = service.getProdutoPorId(id);
 
         if (produto.isPresent()) {
             return ResponseEntity.ok(produto.get());
@@ -45,7 +45,7 @@ public class ProdutosController {
 
         HashMap<String, String> map = new HashMap<>();
 
-        if (produtoValido(produto)) {
+        if (produtoInvalido(produto)) {
             map.put(Strings.ERRO, Strings.ERRO_INCLUIR_CAMPO_DESCRICAO);
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
 
@@ -56,24 +56,24 @@ public class ProdutosController {
         }
     }
 
-    private boolean produtoValido(Produto prod) {
+    private boolean produtoInvalido(Produto prod) {
         return prod.getDescricao() == null || prod.getDescricao().isEmpty();
     }
 	
 	@CrossOrigin
     @PutMapping("/{id}")
-    public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Produto produto) {
+    public ResponseEntity<HashMap<String, String>> put(@PathVariable("id") Long id, @RequestBody Produto novoDadosProduto) {
 
-        Produto prod = service.update(produto, id);
+        Produto produto = service.update(novoDadosProduto, id);
 
         HashMap<String, String> map = new HashMap<>();
 
-        if (produtoValido(produto)) {
+        if (produtoInvalido(novoDadosProduto)) {
             map.put(Strings.ERRO, Strings.ERRO_INCLUIR_CAMPO_DESCRICAO);
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
 
         } else {
-            map.put("idProduto", prod.getId().toString());
+            map.put("idProduto", produto.getId().toString());
             map.put(Strings.STATUS, Strings.SUCESSO_ATUALIZAR_PRODUTO);
             return new ResponseEntity<>(map, HttpStatus.OK);
         }

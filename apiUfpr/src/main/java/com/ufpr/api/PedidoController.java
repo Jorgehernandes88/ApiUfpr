@@ -1,7 +1,6 @@
 package com.ufpr.api;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import com.ufpr.domain.Cliente;
@@ -46,7 +45,7 @@ public class PedidoController {
         if (pedidos != null) {
             return new ResponseEntity(pedidos, HttpStatus.OK);
         } else {
-            map.put("Erro", "Não foi possivel buscar os pedidos");
+            map.put(Strings.ERRO, Strings.ERRO_BUSCAR_PEDIDOS);
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
     }
@@ -56,7 +55,7 @@ public class PedidoController {
     public ResponseEntity<HashMap<String, String>> get(@PathVariable("id") Long id) {
 
         try{
-            PedidoDTO pedido = service.getPedidoById(id);
+            PedidoDTO pedido = service.getPedidoPorId(id);
             if(pedido.getIdPedido()!=null)
                 return new ResponseEntity(pedido, HttpStatus.OK);
             else{
@@ -83,7 +82,7 @@ public class PedidoController {
     	Cliente cliente;
     	String IdCliente = "";
     	
-    	List<Cliente> clientes = serviceCli.getClientesByCpf(cpf);
+    	List<Cliente> clientes = serviceCli.getClientesPorCpf(cpf);
     	
     	if (clientes.isEmpty())
     	{
@@ -96,7 +95,7 @@ public class PedidoController {
 				IdCliente = cliente.getId().toString();
 			}
     		
-    		List<PedidoDTO> pedidos = service.getPedidoByidCliente(IdCliente);  		
+    		List<PedidoDTO> pedidos = service.getPedidoPorIdCliente(IdCliente);
 
     		if(pedidos.isEmpty())
     		{

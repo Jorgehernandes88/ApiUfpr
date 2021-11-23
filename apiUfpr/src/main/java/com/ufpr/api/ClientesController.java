@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ufpr.domain.ClienteService;
-import com.ufpr.domain.pedido.Pedido;
 import com.ufpr.domain.pedido.PedidoDTO;
 import com.ufpr.domain.pedido.PedidoService;
-import com.ufpr.domain.validadores.ValidaCPF;
+import com.ufpr.domain.validadores.CPF;
 import com.ufpr.utils.Strings;
 import com.ufpr.domain.Cliente;
 
@@ -43,7 +42,7 @@ public class ClientesController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> get( @PathVariable("id") Long id) {
 		
-		Optional<Cliente> cliente = service.getClienteById(id);
+		Optional<Cliente> cliente = service.getClientePorId(id);
 		
 		if(cliente.isPresent())
 		{
@@ -56,7 +55,7 @@ public class ClientesController {
 	@CrossOrigin
 	@GetMapping("/cpf/{cpf}")
 	public  ResponseEntity<List<Cliente>> get( @PathVariable("cpf") String cpf) {
-		List<Cliente> cliente = service.getClientesByCpf(cpf);
+		List<Cliente> cliente = service.getClientesPorCpf(cpf);
 		
 		if(cliente.isEmpty())
 		{
@@ -76,7 +75,7 @@ public class ClientesController {
 			map.put(Strings.ERRO,Strings.ERRO_INCLUIR_CAMPOS_OBRIGATORIOS);
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 					
-		}if (ValidaCPF.isCPF(ValidaCPF.RemovePontuacao(cliente.getCpf())) != true){
+		}if (CPF.valido(CPF.removePontuacao(cliente.getCpf())) != true){
 			map.put(Strings.ERRO,Strings.ERRO_CPF_INVALIDO);
 			return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
 		}else {
@@ -117,7 +116,7 @@ public class ClientesController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HashMap<String, String>> delete(@PathVariable("id") Long id) {
 		HashMap<String, String> map = new HashMap<>();
-		List<PedidoDTO> pedido = pedidoservice.getPedidoByidCliente(id.toString());
+		List<PedidoDTO> pedido = pedidoservice.getPedidoPorIdCliente(id.toString());
 		
 		HttpStatus statusResponse;
 		
